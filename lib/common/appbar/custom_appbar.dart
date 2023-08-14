@@ -1,31 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:prueba_liverpool/constants/colors.dart';
 
-import '../../constants/sizes.dart';
+import '../../features/products/controller/product_controller.dart';
+import '../skeleton/skeleton_custom_text_field.dart';
+import '../text_field/custom_text_field.dart';
 
-class CustomAppbar extends StatelessWidget with PreferredSizeWidget {
-  final String title;
-
+class CustomAppbar extends StatefulWidget with PreferredSizeWidget {
   const CustomAppbar({
-    required this.title,
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      centerTitle: true,
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 20,
-          color: Colors.black,
-        ),
-      ),
+  State<CustomAppbar> createState() => _CustomAppbarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
+}
+
+class _CustomAppbarState extends State<CustomAppbar> {
+  late ProductController _productController;
+
+  @override
+  void initState() {
+    super.initState();
+    _setRepositoryAndController();
+  }
+
+  void _setRepositoryAndController() {
+    _productController = Provider.of<ProductController>(
+      context,
+      listen: false,
+    );
+  }
+
+  void filterSearchResults(String query) {
+    _productController.onSortOption(
+      query: query,
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(50);
+  Widget build(BuildContext context) {
+    return AppBar(
+      elevation: 0.0,
+      backgroundColor: MainColor.primaryColor,
+      title: Builder(builder: (context) {
+        final productController = Provider.of<ProductController>(context);
+        if (productController.isLoading == true) {
+          return const SkeletonCustomTextField();
+        }
+        return SizedBox(
+          width: double.infinity,
+          height: 40,
+          child: Center(
+            child: CustomTextField(
+              onChanged: filterSearchResults,
+            ),
+          ),
+        );
+      }),
+    );
+  }
 }

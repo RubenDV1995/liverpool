@@ -11,23 +11,30 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 void main() {
+  final ProductRepositoryImpl productRepositoryImpl = ProductRepositoryImpl(
+    productService: ProductsService(
+      Http(
+        baseUrl: 'https://newastro.vercel.app/',
+        apiKey: '',
+        client: http.Client(),
+      ),
+    ),
+  );
+
+  final ScrollController scrollControllerProducts = ScrollController();
+
   runApp(
     MultiProvider(
       providers: [
         Provider<ProductRepository>(
-          create: (_) => ProductRepositoryImpl(
-            productService: ProductsService(
-              Http(
-                baseUrl: 'https://newastro.vercel.app/',
-                apiKey: '',
-                client: http.Client(),
-              ),
-            ),
-          ),
+          create: (_) => productRepositoryImpl,
         ),
       ],
       child: ChangeNotifierProvider<ProductController>(
-        create: (_) => ProductController(),
+        create: (_) => ProductController(
+          productRepositoryImpl: productRepositoryImpl,
+          scrollControllerProducts: scrollControllerProducts,
+        ),
         child: const MyApp(),
       ),
     ),

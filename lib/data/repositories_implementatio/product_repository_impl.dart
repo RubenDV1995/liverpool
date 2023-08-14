@@ -13,7 +13,7 @@ class ProductRepositoryImpl implements ProductRepository {
   }) : _productService = productService;
 
   @override
-  Future<Either<FailuresEnum, Product>> getProduct() async {
+  Future<Either<FailuresEnum, Temperatures>> getProduct() async {
     final resultProduct = await _productService.getProducts();
     return resultProduct.when(
       (failure) async => Either.left(

@@ -3,5 +3,5 @@ import '../../utils/enums/failures.dart';
 import '../models/product_model.dart';
 
 abstract class ProductRepository{
-  Future<Either<FailuresEnum, Product>> getProduct();
+  Future<Either<FailuresEnum, Temperatures>> getProduct();
 }

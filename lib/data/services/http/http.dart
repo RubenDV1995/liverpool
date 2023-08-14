@@ -103,7 +103,7 @@ class Http {
       return Either.left(
         FailuresEnum.notFoundElements,
       );
-    } catch (e, s) {
+    } catch (e) {
       if (e is ClientException || e is SocketException) {
         return Either.left(
           FailuresEnum.network,

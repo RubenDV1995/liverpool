@@ -9,6 +9,16 @@ final mainTheme = ThemeData(
   shadowColor: ThemeData.light().shadowColor,
   brightness: Brightness.light,
   primarySwatch: Colors.blue,
+  switchTheme: SwitchThemeData(
+    thumbColor:
+    MaterialStateProperty.all(MainColor.primaryColor),
+    trackColor: MaterialStateProperty.all(Colors.grey[400]),
+  ),
+  colorScheme: ColorScheme.light(
+    primary: Colors.grey.withOpacity(0.6),
+    secondary: MainColor.primaryColor,
+  ),
+  dividerColor: Colors.transparent,
 
   ///TEXT
   textTheme: const TextTheme(
